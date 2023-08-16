@@ -48,7 +48,6 @@ namespace DependencyInjection.Annotation.SourceGenerator
         private static string GenerateCode(ServiceSyntaxReceiver receiver, Compilation compilation, string methodName)
         {
             var builder = new StringBuilder();
-            builder.AppendLine("using Microsoft.Extensions.DependencyInjection.Extensions;");
             builder.AppendLine("namespace Microsoft.Extensions.DependencyInjection");
             builder.AppendLine("{");
             builder.AppendLine($"    public static partial class ServiceCollectionExtensions");
@@ -56,7 +55,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
 
             builder.AppendLine($"""
                         /// <summary>
-                        /// 将下{compilation.AssemblyName}下所有ServiceAttribute标记的类型注册到DI
+                        /// 将程序集{compilation.AssemblyName}的所有ServiceAttribute标记类型注册到DI
                         /// </summary>
                         /// <param name="services"></param>
                         /// <returns></returns>
@@ -69,14 +68,18 @@ namespace DependencyInjection.Annotation.SourceGenerator
             {
                 if (descriptor.ServiceTypes.Count == 1)
                 {
-                    builder.AppendLine($"            services.TryAddEnumerable(ServiceDescriptor.Describe(typeof({descriptor.ServiceTypes[0]}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                    var serviceType = descriptor.ServiceTypes.First();
+                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
                 }
                 else
                 {
-                    builder.AppendLine($"            services.TryAddEnumerable(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
                     foreach (var serviceType in descriptor.ServiceTypes)
                     {
-                        builder.AppendLine($"            services.TryAddEnumerable(ServiceDescriptor.Describe(typeof({serviceType}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType}>(), ServiceLifetime.{descriptor.Lifetime}));");
+                        if (serviceType.Equals(descriptor.DeclaredType, SymbolEqualityComparer.Default) == false)
+                        {
+                            builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType}>(), ServiceLifetime.{descriptor.Lifetime}));");
+                        }
                     }
                 }
             }

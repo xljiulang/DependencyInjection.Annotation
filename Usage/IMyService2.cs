@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Usage
+﻿namespace Usage
 {
-    interface IMyService2
+    interface IMyService2 
     {
+        void LogWarning(string value);
     }
 }

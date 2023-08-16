@@ -1,19 +1,19 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Usage
 {
-    internal class Program
+    class Program
     {
-
         static void Main(string[] args)
         {
-            var services = new ServiceCollection();
-            services.AddUsage();
-
-            var root = services.BuildServiceProvider();
-            var service = root.GetRequiredService<IMyService>();
-
-            Console.WriteLine("Hello, World!");
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices(services =>
+                {  
+                    services.AddUsage();
+                })
+                .Build()
+                .Run();
         }
 
     }

@@ -21,7 +21,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
         /// <summary>
         /// 服务类型
         /// </summary>
-        public List<INamedTypeSymbol> ServiceTypes { get; } = new List<INamedTypeSymbol>();
+        public HashSet<INamedTypeSymbol> ServiceTypes { get; } = new(SymbolEqualityComparer.Default);
 
         /// <summary>
         /// 服务描述
