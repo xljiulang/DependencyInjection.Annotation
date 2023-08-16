@@ -1,0 +1,2 @@
+# DependencyInjection.Annotation
+基于注解的服务自动查找与注册的DI扩展
