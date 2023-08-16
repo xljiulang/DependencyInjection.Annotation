@@ -1,0 +1,6 @@
+﻿namespace Usage
+{
+    interface IMyService
+    {
+    } 
+}
