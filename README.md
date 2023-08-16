@@ -1,5 +1,5 @@
 # DependencyInjection.Annotation
-基于注解的服务自动查找与注册的DI扩展
+基于注解的服务自动查找与注册的DI扩展。使用SourceGenerator无反射，完美支持AOT。
 
 ### 食用步骤
 #### 1 nuget引用 
