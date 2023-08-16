@@ -13,6 +13,9 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/xljiulang/DependencyInjection.Annotation</PackageProjectUrl>
+		<Title>基于注解的服务自动查找与注册的DI扩展</Title>
+		<Summary>$(Title)</Summary>
+		<Description>$(Title)</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
