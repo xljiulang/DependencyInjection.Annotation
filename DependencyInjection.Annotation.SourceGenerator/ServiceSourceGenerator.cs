@@ -69,16 +69,16 @@ namespace DependencyInjection.Annotation.SourceGenerator
                 if (descriptor.ServiceTypes.Count == 1)
                 {
                     var serviceType = descriptor.ServiceTypes.First();
-                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}), typeof({descriptor.DeclaredType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}), ServiceLifetime.{descriptor.Lifetime}));");
                 }
                 else
                 {
-                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}), typeof({descriptor.DeclaredType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}), ServiceLifetime.{descriptor.Lifetime}));");
                     foreach (var serviceType in descriptor.ServiceTypes)
                     {
                         if (serviceType.Equals(descriptor.DeclaredType, SymbolEqualityComparer.Default) == false)
                         {
-                            builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType}>(), ServiceLifetime.{descriptor.Lifetime}));");
+                            builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(), ServiceLifetime.{descriptor.Lifetime}));");
                         }
                     }
                 }

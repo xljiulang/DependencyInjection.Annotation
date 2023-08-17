@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection.Annotation", "DependencyInjection.Annotation\DependencyInjection.Annotation.csproj", "{3E8BCD63-5A91-4280-8AAF-C5341C05F849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection.Annotation", "DependencyInjection.Annotation\DependencyInjection.Annotation.csproj", "{3E8BCD63-5A91-4280-8AAF-C5341C05F849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection.Annotation.SourceGenerator", "DependencyInjection.Annotation.SourceGenerator\DependencyInjection.Annotation.SourceGenerator.csproj", "{F1833707-1B75-42BD-ABFB-6BCC0C91F2A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection.Annotation.SourceGenerator", "DependencyInjection.Annotation.SourceGenerator\DependencyInjection.Annotation.SourceGenerator.csproj", "{F1833707-1B75-42BD-ABFB-6BCC0C91F2A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Usage", "Usage\Usage.csproj", "{178265AB-A3A5-4E81-82D5-473FB246EB01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection.Annotation.Test", "DependencyInjection.Annotation.Test\DependencyInjection.Annotation.Test.csproj", "{1ED9623A-AAF4-4C03-A4A4-B109062E8D2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{F1833707-1B75-42BD-ABFB-6BCC0C91F2A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1833707-1B75-42BD-ABFB-6BCC0C91F2A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1833707-1B75-42BD-ABFB-6BCC0C91F2A2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{178265AB-A3A5-4E81-82D5-473FB246EB01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{178265AB-A3A5-4E81-82D5-473FB246EB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{178265AB-A3A5-4E81-82D5-473FB246EB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{178265AB-A3A5-4E81-82D5-473FB246EB01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ED9623A-AAF4-4C03-A4A4-B109062E8D2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED9623A-AAF4-4C03-A4A4-B109062E8D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED9623A-AAF4-4C03-A4A4-B109062E8D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED9623A-AAF4-4C03-A4A4-B109062E8D2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
