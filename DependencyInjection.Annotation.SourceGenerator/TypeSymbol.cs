@@ -3,23 +3,23 @@ using System;
 
 namespace DependencyInjection.Annotation.SourceGenerator
 {
-    sealed class NamedTypeSymbol : IEquatable<NamedTypeSymbol>
+    sealed class TypeSymbol : IEquatable<TypeSymbol>
     {
-        private readonly INamedTypeSymbol typeSymbol;
+        private readonly ITypeSymbol typeSymbol;
 
-        public NamedTypeSymbol(INamedTypeSymbol typeSymbol)
+        public TypeSymbol(ITypeSymbol typeSymbol)
         {
             this.typeSymbol = typeSymbol;
         }
 
-        public bool Equals(NamedTypeSymbol? other)
+        public bool Equals(TypeSymbol? other)
         {
             return other != null && this.typeSymbol.Equals(other.typeSymbol, SymbolEqualityComparer.Default);
         }
 
         public override bool Equals(object? obj)
         {
-            return this.Equals(obj as NamedTypeSymbol);
+            return this.Equals(obj as TypeSymbol);
         }
 
         public override int GetHashCode()

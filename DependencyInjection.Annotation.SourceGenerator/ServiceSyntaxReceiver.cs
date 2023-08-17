@@ -34,7 +34,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
             foreach (var syntax in this.classSyntaxList)
             {
                 var symbol = compilation.GetSemanticModel(syntax.SyntaxTree).GetDeclaredSymbol(syntax);
-                if (symbol is INamedTypeSymbol @class)
+                if (symbol is ITypeSymbol @class)
                 {
                     foreach (var descriptor in GetServiceDescriptors(@class, serviceAttributeClass))
                     {
@@ -44,7 +44,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
             }
         }
 
-        private static IEnumerable<ServiceDescriptor> GetServiceDescriptors(INamedTypeSymbol @class, INamedTypeSymbol serviceAttributeClass)
+        private static IEnumerable<ServiceDescriptor> GetServiceDescriptors(ITypeSymbol @class, INamedTypeSymbol serviceAttributeClass)
         {
             foreach (var attr in @class.GetAttributes())
             {
@@ -58,13 +58,13 @@ namespace DependencyInjection.Annotation.SourceGenerator
                         Enum.IsDefined(typeof(ServiceLifetime), intValue))
                     {
                         var lifetime = (ServiceLifetime)intValue;
-                        var descriptor = new ServiceDescriptor(lifetime, new NamedTypeSymbol(@class));
+                        var descriptor = new ServiceDescriptor(lifetime, new TypeSymbol(@class));
 
                         for (var i = 1; i < args.Length; i++)
                         {
-                            if (args[i].Value is INamedTypeSymbol serviceType)
+                            if (args[i].Value is ITypeSymbol serviceType)
                             {
-                                descriptor.ServiceTypes.Add(new NamedTypeSymbol(serviceType));
+                                descriptor.ServiceTypes.Add(new TypeSymbol(serviceType));
                             }
                         }
                         yield return descriptor;
