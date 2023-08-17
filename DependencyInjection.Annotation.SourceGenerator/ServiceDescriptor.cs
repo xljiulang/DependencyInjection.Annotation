@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DependencyInjection.Annotation.SourceGenerator
 {
@@ -16,19 +15,19 @@ namespace DependencyInjection.Annotation.SourceGenerator
         /// <summary>
         /// 声明类型
         /// </summary>
-        public INamedTypeSymbol DeclaredType { get; }
+        public NamedTypeSymbol DeclaredType { get; }
 
         /// <summary>
         /// 服务类型
         /// </summary>
-        public HashSet<INamedTypeSymbol> ServiceTypes { get; } = new(SymbolEqualityComparer.Default);
+        public HashSet<NamedTypeSymbol> ServiceTypes { get; } = new HashSet<NamedTypeSymbol>();
 
         /// <summary>
         /// 服务描述
         /// </summary>
         /// <param name="lifetime">生命周期</param>
         /// <param name="declaredType">声明类型</param>
-        public ServiceDescriptor(ServiceLifetime lifetime, INamedTypeSymbol declaredType)
+        public ServiceDescriptor(ServiceLifetime lifetime, NamedTypeSymbol declaredType)
         {
             this.Lifetime = lifetime;
             this.DeclaredType = declaredType;

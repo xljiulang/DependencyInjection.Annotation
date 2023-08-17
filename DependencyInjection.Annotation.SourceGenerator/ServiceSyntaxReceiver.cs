@@ -58,13 +58,13 @@ namespace DependencyInjection.Annotation.SourceGenerator
                         Enum.IsDefined(typeof(ServiceLifetime), intValue))
                     {
                         var lifetime = (ServiceLifetime)intValue;
-                        var descriptor = new ServiceDescriptor(lifetime, @class);
+                        var descriptor = new ServiceDescriptor(lifetime, new NamedTypeSymbol(@class));
 
                         for (var i = 1; i < args.Length; i++)
                         {
                             if (args[i].Value is INamedTypeSymbol serviceType)
                             {
-                                descriptor.ServiceTypes.Add(serviceType);
+                                descriptor.ServiceTypes.Add(new NamedTypeSymbol(serviceType));
                             }
                         }
                         yield return descriptor;
