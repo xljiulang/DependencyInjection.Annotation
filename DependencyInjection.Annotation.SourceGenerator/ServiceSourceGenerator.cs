@@ -50,6 +50,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
             var builder = new StringBuilder();
             builder.AppendLine("namespace Microsoft.Extensions.DependencyInjection");
             builder.AppendLine("{");
+            builder.AppendLine("    /// <summary>IServiceCollection扩展</summary>");
             builder.AppendLine($"    public static partial class ServiceCollectionExtensions");
             builder.AppendLine("    {");
 
