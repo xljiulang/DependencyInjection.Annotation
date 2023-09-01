@@ -9,12 +9,56 @@ namespace DependencyInjection.Annotation.SourceGenerator
     {
         private readonly List<ClassDeclarationSyntax> classSyntaxList = new();
         private static readonly string serviceAttributeTypeName = "Microsoft.Extensions.DependencyInjection.ServiceAttribute";
+        private static readonly string optionsAttributeTypeName = "Microsoft.Extensions.DependencyInjection.OptionsAttribute";
 
         public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
         {
             if (syntaxNode is ClassDeclarationSyntax syntax)
             {
                 this.classSyntaxList.Add(syntax);
+            }
+        }
+
+        /// <summary>
+        /// 获取Options描述
+        /// </summary>
+        /// <param name="compilation"></param>
+        /// <returns></returns>
+        public IEnumerable<OptionsDescriptor> GetOptionsDescriptors(Compilation compilation)
+        {
+            var optionsAttributeClass = compilation.GetTypeByMetadataName(optionsAttributeTypeName);
+            if (optionsAttributeClass == null)
+            {
+                yield break;
+            }
+
+            foreach (var syntax in this.classSyntaxList)
+            {
+                var symbol = compilation.GetSemanticModel(syntax.SyntaxTree).GetDeclaredSymbol(syntax);
+                if (symbol is ITypeSymbol @class)
+                {
+                    foreach (var descriptor in GetOptionsDescriptors(@class, optionsAttributeClass))
+                    {
+                        yield return descriptor;
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<OptionsDescriptor> GetOptionsDescriptors(ITypeSymbol @class, INamedTypeSymbol optionsAttributeClass)
+        {
+            foreach (var attr in @class.GetAttributes())
+            {
+                var attrClass = attr.AttributeClass;
+                if (attrClass != null && attrClass.Equals(optionsAttributeClass, SymbolEqualityComparer.Default))
+                {
+                    var args = attr.ConstructorArguments;
+                    var declaredType = new TypeSymbol(@class);
+
+                    yield return args.Length > 0 && args[0].Value is string section
+                        ? new OptionsDescriptor(declaredType, section)
+                        : new OptionsDescriptor(declaredType, @class.Name);
+                }
             }
         }
 

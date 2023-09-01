@@ -48,45 +48,73 @@ namespace DependencyInjection.Annotation.SourceGenerator
         private static string GenerateCode(ServiceSyntaxReceiver receiver, Compilation compilation, string methodName)
         {
             var builder = new StringBuilder();
+            builder.AppendLine("using Microsoft.Extensions.Configuration;");
             builder.AppendLine("namespace Microsoft.Extensions.DependencyInjection");
             builder.AppendLine("{");
             builder.AppendLine("    /// <summary>IServiceCollection扩展</summary>");
             builder.AppendLine($"    public static partial class ServiceCollectionExtensions");
             builder.AppendLine("    {");
 
-            builder.AppendLine($"""
+            var serviceDescriptors = receiver.GetServiceDescriptors(compilation).ToArray();
+            if (serviceDescriptors.Length > 0)
+            {
+                builder.AppendLine($"""
                         /// <summary>
                         /// 将程序集{compilation.AssemblyName}的所有ServiceAttribute标记类型注册到DI
                         /// </summary>
                         /// <param name="services"></param>
                         /// <returns></returns>
                 """);
+                builder.AppendLine($"        public static IServiceCollection {methodName}(this IServiceCollection services)");
+                builder.AppendLine("        {");
 
-            builder.AppendLine($"        public static IServiceCollection {methodName}(this IServiceCollection services)");
-            builder.AppendLine("        {");
 
-            foreach (var descriptor in receiver.GetServiceDescriptors(compilation))
-            {
-                if (descriptor.ServiceTypes.Count == 1)
+                foreach (var descriptor in serviceDescriptors)
                 {
-                    var serviceType = descriptor.ServiceTypes.First();
-                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
-                }
-                else
-                {
-                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
-                    foreach (var serviceType in descriptor.ServiceTypes)
+                    if (descriptor.ServiceTypes.Count == 1)
                     {
-                        if (serviceType.Equals(descriptor.DeclaredType) == false)
+                        var serviceType = descriptor.ServiceTypes.First();
+                        builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                    }
+                    else
+                    {
+                        builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                        foreach (var serviceType in descriptor.ServiceTypes)
                         {
-                            builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType}>(), ServiceLifetime.{descriptor.Lifetime}));");
+                            if (serviceType.Equals(descriptor.DeclaredType) == false)
+                            {
+                                builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType}>(), ServiceLifetime.{descriptor.Lifetime}));");
+                            }
                         }
                     }
                 }
+
+                builder.AppendLine("            return services;");
+                builder.AppendLine("        }");
             }
 
-            builder.AppendLine("            return services;");
-            builder.AppendLine("        }");
+            var optionsDescriptors = receiver.GetOptionsDescriptors(compilation).ToArray();
+            if (optionsDescriptors.Length > 0)
+            {
+                builder.AppendLine($"""
+                        /// <summary>
+                        /// 将程序集{compilation.AssemblyName}的所有OptionsAttribute标记类型绑定到配置
+                        /// </summary>
+                        /// <param name="services"></param>
+                        /// <param name="configuration"></param>
+                        /// <returns></returns>
+                """);
+                builder.AppendLine($"        public static IServiceCollection {methodName}Options(this IServiceCollection services, IConfiguration configuration)");
+                builder.AppendLine("        {");
+                foreach (var descriptor in optionsDescriptors)
+                {
+                    builder.AppendLine($"            {descriptor.ToString("services", "configuration")}");
+                }
+
+                builder.AppendLine("            return services;");
+                builder.AppendLine("        }");
+            }
+
             builder.AppendLine("    }");
             builder.AppendLine("}");
 

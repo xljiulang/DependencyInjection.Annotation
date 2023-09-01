@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "DependencyInjection.Annotation.SourceGenerator/1.0.0": {
+      "DependencyInjection.Annotation.SourceGenerator/1.1.0": {
         "dependencies": {
           "Microsoft.CodeAnalysis.Analyzers": "3.3.2",
           "Microsoft.CodeAnalysis.CSharp": "3.8.0",
@@ -73,7 +73,7 @@
     }
   },
   "libraries": {
-    "DependencyInjection.Annotation.SourceGenerator/1.0.0": {
+    "DependencyInjection.Annotation.SourceGenerator/1.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
