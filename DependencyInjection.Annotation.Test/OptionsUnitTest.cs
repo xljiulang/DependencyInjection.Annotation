@@ -11,7 +11,7 @@ namespace DependencyInjection.Annotation.Test
     }
 
     [Options("Test2")]
-    public class Test2Options
+    public record Test2Options
     {
         public int Age { get; set; }
     }

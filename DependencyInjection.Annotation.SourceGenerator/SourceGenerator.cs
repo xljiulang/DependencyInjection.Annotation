@@ -5,7 +5,7 @@ using System.Text;
 namespace DependencyInjection.Annotation.SourceGenerator
 {
     [Generator]
-    public sealed class ServiceSourceGenerator : ISourceGenerator
+    public sealed class SourceGenerator : ISourceGenerator
     {
         private static readonly string hintName = "DependencyInjection.Annotation";
 
@@ -15,7 +15,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
         /// <param name="context"></param>
         public void Initialize(GeneratorInitializationContext context)
         {
-            context.RegisterForSyntaxNotifications(() => new ServiceSyntaxReceiver());
+            context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
         {
             //  System.Diagnostics.Debugger.Launch();
 
-            if (context.SyntaxReceiver is ServiceSyntaxReceiver receiver)
+            if (context.SyntaxReceiver is SyntaxReceiver receiver)
             {
                 var methodName = GetMethodName(context.Compilation);
                 var code = GenerateCode(receiver, context.Compilation, methodName);
@@ -45,7 +45,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
             }
         }
 
-        private static string GenerateCode(ServiceSyntaxReceiver receiver, Compilation compilation, string methodName)
+        private static string GenerateCode(SyntaxReceiver receiver, Compilation compilation, string methodName)
         {
             var builder = new StringBuilder();
             builder.AppendLine("using Microsoft.Extensions.Configuration;");

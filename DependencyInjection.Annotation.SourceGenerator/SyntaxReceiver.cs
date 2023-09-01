@@ -5,17 +5,21 @@ using System.Collections.Generic;
 
 namespace DependencyInjection.Annotation.SourceGenerator
 {
-    sealed class ServiceSyntaxReceiver : ISyntaxReceiver
+    sealed class SyntaxReceiver : ISyntaxReceiver
     {
-        private readonly List<ClassDeclarationSyntax> classSyntaxList = new();
+        private readonly List<TypeDeclarationSyntax> typeSyntaxList = new();
         private static readonly string serviceAttributeTypeName = "Microsoft.Extensions.DependencyInjection.ServiceAttribute";
         private static readonly string optionsAttributeTypeName = "Microsoft.Extensions.DependencyInjection.OptionsAttribute";
 
         public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
         {
-            if (syntaxNode is ClassDeclarationSyntax syntax)
+            if (syntaxNode is ClassDeclarationSyntax classSyntax)
             {
-                this.classSyntaxList.Add(syntax);
+                this.typeSyntaxList.Add(classSyntax);
+            }
+            else if (syntaxNode is RecordDeclarationSyntax recordSyntax)
+            {
+                this.typeSyntaxList.Add(recordSyntax);
             }
         }
 
@@ -32,7 +36,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
                 yield break;
             }
 
-            foreach (var syntax in this.classSyntaxList)
+            foreach (var syntax in this.typeSyntaxList)
             {
                 var symbol = compilation.GetSemanticModel(syntax.SyntaxTree).GetDeclaredSymbol(syntax);
                 if (symbol is ITypeSymbol @class)
@@ -75,7 +79,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
                 yield break;
             }
 
-            foreach (var syntax in this.classSyntaxList)
+            foreach (var syntax in this.typeSyntaxList)
             {
                 var symbol = compilation.GetSemanticModel(syntax.SyntaxTree).GetDeclaredSymbol(syntax);
                 if (symbol is ITypeSymbol @class)
