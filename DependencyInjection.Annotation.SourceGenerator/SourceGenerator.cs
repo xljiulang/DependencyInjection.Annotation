@@ -7,7 +7,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
     [Generator]
     public sealed class SourceGenerator : ISourceGenerator
     {
-        private static readonly string hintName = "DependencyInjection.Annotation";
+        private static readonly string hintName = "ServiceCollectionExtensions.g.cs";
 
         /// <summary>
         /// 初始化
@@ -28,16 +28,16 @@ namespace DependencyInjection.Annotation.SourceGenerator
 
             if (context.SyntaxReceiver is SyntaxReceiver receiver)
             {
-                var methodName = GetMethodName(context.Compilation);
-                var code = GenerateCode(receiver, context.Compilation, methodName);
+                var assemblyName = GetAssemblyName(context.Compilation);
+                var code = GenerateCode(receiver, context.Compilation, assemblyName);
                 context.AddSource(hintName, code);
             }
         }
 
-        private static string GetMethodName(Compilation compilation)
+        private static string GetAssemblyName(Compilation compilation)
         {
-            var methodName = $"Add{compilation.AssemblyName}";
-            return new string(methodName.Where(IsAllowChar).ToArray());
+            var assemblyName = compilation.AssemblyName ?? string.Empty;
+            return new string(assemblyName.Where(IsAllowChar).ToArray());
 
             static bool IsAllowChar(char c)
             {
@@ -45,14 +45,14 @@ namespace DependencyInjection.Annotation.SourceGenerator
             }
         }
 
-        private static string GenerateCode(SyntaxReceiver receiver, Compilation compilation, string methodName)
+        private static string GenerateCode(SyntaxReceiver receiver, Compilation compilation, string assemblyName)
         {
             var builder = new StringBuilder();
             builder.AppendLine("using Microsoft.Extensions.Configuration;");
             builder.AppendLine("namespace Microsoft.Extensions.DependencyInjection");
             builder.AppendLine("{");
             builder.AppendLine("    /// <summary>IServiceCollection扩展</summary>");
-            builder.AppendLine($"    public static partial class ServiceCollectionExtensions");
+            builder.AppendLine($"    public static partial class ServiceCollectionExtensions_{assemblyName}");
             builder.AppendLine("    {");
 
             var serviceDescriptors = receiver.GetServiceDescriptors(compilation).ToArray();
@@ -65,7 +65,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
                         /// <param name="services"></param>
                         /// <returns></returns>
                 """);
-                builder.AppendLine($"        public static IServiceCollection {methodName}(this IServiceCollection services)");
+                builder.AppendLine($"        public static IServiceCollection Add{assemblyName}(this IServiceCollection services)");
                 builder.AppendLine("        {");
 
 
@@ -104,7 +104,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
                         /// <param name="configuration"></param>
                         /// <returns></returns>
                 """);
-                builder.AppendLine($"        public static IServiceCollection {methodName}Options(this IServiceCollection services, IConfiguration configuration)");
+                builder.AppendLine($"        public static IServiceCollection Add{assemblyName}Options(this IServiceCollection services, IConfiguration configuration)");
                 builder.AppendLine("        {");
                 foreach (var descriptor in optionsDescriptors)
                 {
