@@ -6,8 +6,9 @@ namespace DependencyInjection.Annotation.SourceGenerator
 {
     [Generator]
     public sealed class SourceGenerator : ISourceGenerator
-    {
-        private static readonly string hintName = "ServiceCollectionExtensions.g.cs";
+    {      
+        private static readonly string fileName = "ServiceCollectionExtensions.g.cs";
+        private static readonly string className = "ServiceCollectionExtensions_G";
 
         /// <summary>
         /// 初始化
@@ -30,7 +31,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
             {
                 var assemblyName = GetAssemblyName(context.Compilation);
                 var code = GenerateCode(receiver, context.Compilation, assemblyName);
-                context.AddSource(hintName, code);
+                context.AddSource(fileName, code);
             }
         }
 
@@ -52,7 +53,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
             builder.AppendLine("namespace Microsoft.Extensions.DependencyInjection");
             builder.AppendLine("{");
             builder.AppendLine("    /// <summary>IServiceCollection扩展</summary>");
-            builder.AppendLine($"    public static partial class ServiceCollectionExtensions_{assemblyName}");
+            builder.AppendLine($"    public static partial class {className}");
             builder.AppendLine("    {");
 
             var serviceDescriptors = receiver.GetServiceDescriptors(compilation).ToArray();
