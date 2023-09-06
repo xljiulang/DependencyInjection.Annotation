@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<Version>1.1.1</Version>
+	<PropertyGroup> 
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 		<TargetFramework>netstandard2.0</TargetFramework>

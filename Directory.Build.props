@@ -1,0 +1,7 @@
+<Project>
+	<!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+	<PropertyGroup> 
+		<Version>1.1.2</Version>
+		<ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath> 
+	</PropertyGroup>
+</Project>
