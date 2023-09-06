@@ -4,7 +4,7 @@
 ### 食用步骤
 #### 1 nuget引用 
 ```xml
-<PackageReference Include="DependencyInjection.Annotation" Version="1.0.0" />
+<PackageReference Include="DependencyInjection.Annotation" Version="1.1.1" />
 ```
 
 #### 2 服务标记
