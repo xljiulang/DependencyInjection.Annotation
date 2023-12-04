@@ -22,15 +22,18 @@ namespace DependencyInjection.Annotation.SourceGenerator
         /// </summary>
         public HashSet<TypeSymbol> ServiceTypes { get; } = new HashSet<TypeSymbol>();
 
+        public string? Key { get; }
+
         /// <summary>
         /// 服务描述
         /// </summary>
         /// <param name="lifetime">生命周期</param>
         /// <param name="declaredType">声明类型</param>
-        public ServiceDescriptor(ServiceLifetime lifetime, TypeSymbol declaredType)
+        public ServiceDescriptor(ServiceLifetime lifetime, TypeSymbol declaredType, string? key)
         {
             this.Lifetime = lifetime;
             this.DeclaredType = declaredType;
+            this.Key = key;
         }
     }
 }
