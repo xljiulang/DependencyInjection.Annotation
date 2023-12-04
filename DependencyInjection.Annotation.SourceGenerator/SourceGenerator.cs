@@ -6,7 +6,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
 {
     [Generator]
     public sealed class SourceGenerator : ISourceGenerator
-    {      
+    {
         private static readonly string fileName = "ServiceCollectionExtensions.g.cs";
         private static readonly string className = "ServiceCollectionExtensions_G";
 
@@ -75,16 +75,37 @@ namespace DependencyInjection.Annotation.SourceGenerator
                     if (descriptor.ServiceTypes.Count == 1)
                     {
                         var serviceType = descriptor.ServiceTypes.First();
-                        builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                        if (descriptor.Key == null)
+                        {
+                            builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                        }
+                        else
+                        {
+                            builder.AppendLine($"            services.Add(ServiceDescriptor.DescribeKeyed(typeof({serviceType}),{descriptor.Key}, typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                        }
                     }
                     else
                     {
-                        builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
-                        foreach (var serviceType in descriptor.ServiceTypes)
+                        if (descriptor.Key == null)
                         {
-                            if (serviceType.Equals(descriptor.DeclaredType) == false)
+                            builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({descriptor.DeclaredType}), typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                            foreach (var serviceType in descriptor.ServiceTypes)
                             {
-                                builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType}>(), ServiceLifetime.{descriptor.Lifetime}));");
+                                if (serviceType.Equals(descriptor.DeclaredType) == false)
+                                {
+                                    builder.AppendLine($"            services.Add(ServiceDescriptor.Describe(typeof({serviceType}), serviceProvider => serviceProvider.GetRequiredService<{descriptor.DeclaredType}>(), ServiceLifetime.{descriptor.Lifetime}));");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            builder.AppendLine($"            services.Add(ServiceDescriptor.DescribeKeyed(typeof({descriptor.DeclaredType}),{descriptor.Key}, typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                            foreach (var serviceType in descriptor.ServiceTypes)
+                            {
+                                if (serviceType.Equals(descriptor.DeclaredType) == false)
+                                {
+                                    builder.AppendLine($"            services.Add(ServiceDescriptor.DescribeKeyed(typeof({serviceType}), {descriptor.Key}, typeof({descriptor.DeclaredType}), ServiceLifetime.{descriptor.Lifetime}));");
+                                }
                             }
                         }
                     }

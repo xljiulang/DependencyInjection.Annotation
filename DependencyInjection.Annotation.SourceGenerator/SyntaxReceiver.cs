@@ -1,7 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace DependencyInjection.Annotation.SourceGenerator
 {
@@ -106,18 +109,46 @@ namespace DependencyInjection.Annotation.SourceGenerator
                         Enum.IsDefined(typeof(ServiceLifetime), intValue))
                     {
                         var lifetime = (ServiceLifetime)intValue;
-                        var descriptor = new ServiceDescriptor(lifetime, new TypeSymbol(@class));
-
-                        for (var i = 1; i < args.Length; i++)
+                        ServiceDescriptor descriptor;
+                        if (args.Length > 1)
                         {
-                            if (args[i].Value is ITypeSymbol serviceType)
+                            descriptor = new ServiceDescriptor(lifetime, new TypeSymbol(@class), GetKeyString(args.Last()));
+                            for (var i = 1; i < args.Length - 1; i++)
                             {
-                                descriptor.ServiceTypes.Add(new TypeSymbol(serviceType));
+                                if (args[i].Value is ITypeSymbol serviceType)
+                                {
+                                    descriptor.ServiceTypes.Add(new TypeSymbol(serviceType));
+                                }
                             }
+                        }
+                        else
+                        {
+                            descriptor = new ServiceDescriptor(lifetime, new TypeSymbol(@class), null);
                         }
                         yield return descriptor;
                     }
                 }
+            }
+        }
+
+        private static string? GetKeyString(TypedConstant keyTypedConstant)
+        {
+            object? value = keyTypedConstant.Value;
+            if (value is null)
+            {
+                return null;
+            }
+            else if (keyTypedConstant.Kind == TypedConstantKind.Enum)
+            {
+                return $"global::{keyTypedConstant.ToCSharpString()}";
+            }
+            else if (value is string stringValue)
+            {
+                return $"\"{stringValue}\"";
+            }
+            else
+            {
+                return value.ToString();
             }
         }
     }

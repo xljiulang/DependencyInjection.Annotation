@@ -21,8 +21,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="lifetime">生命周期</param>
         /// <param name="serviceType1">注册的服务类型</param>
+        /// <param name="key">注册的服务key</param>
         public ServiceAttribute(ServiceLifetime lifetime,
-            Type serviceType1)
+            Type serviceType1,
+            object? key = null)
         {
         }
 
@@ -32,9 +34,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="lifetime">生命周期</param>
         /// <param name="serviceType1">注册的服务类型1</param>
         /// <param name="serviceType2">注册的服务类型2</param>
+        /// <param name="key">注册的服务key</param>
         public ServiceAttribute(ServiceLifetime lifetime,
             Type serviceType1,
-            Type serviceType2)
+            Type serviceType2,
+            object? key = null)
         {
         }
 
@@ -45,10 +49,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="serviceType1">注册的服务类型1</param>
         /// <param name="serviceType2">注册的服务类型2</param>
         /// <param name="serviceType3">注册的服务类型3</param>
+        /// <param name="key">注册的服务key</param>
         public ServiceAttribute(ServiceLifetime lifetime,
             Type serviceType1,
             Type serviceType2,
-            Type serviceType3)
+            Type serviceType3,
+            object? key = null)
         {
         }
 
@@ -60,11 +66,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="serviceType2">注册的服务类型2</param>
         /// <param name="serviceType3">注册的服务类型3</param>
         /// <param name="serviceType4">注册的服务类型4</param>
+        /// <param name="key">注册的服务key</param>
         public ServiceAttribute(ServiceLifetime lifetime,
             Type serviceType1,
             Type serviceType2,
             Type serviceType3,
-            Type serviceType4)
+            Type serviceType4,
+            object? key = null)
         {
         }
 
@@ -77,12 +85,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="serviceType3">注册的服务类型3</param>
         /// <param name="serviceType4">注册的服务类型4</param>
         /// <param name="serviceType5">注册的服务类型5</param>
+        /// <param name="key">注册的服务key</param>
         public ServiceAttribute(ServiceLifetime lifetime,
             Type serviceType1,
             Type serviceType2,
             Type serviceType3,
             Type serviceType4,
-            Type serviceType5)
+            Type serviceType5,
+            object? key = null)
         {
         }
 
@@ -96,13 +106,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="serviceType4">注册的服务类型4</param>
         /// <param name="serviceType5">注册的服务类型5</param>
         /// <param name="serviceType6">注册的服务类型6</param>
+        /// <param name="key">注册的服务key</param>
         public ServiceAttribute(ServiceLifetime lifetime,
             Type serviceType1,
             Type serviceType2,
             Type serviceType3,
             Type serviceType4,
             Type serviceType5,
-            Type serviceType6)
+            Type serviceType6,
+            object? key = null)
         {
         }
     }
